@@ -3,6 +3,7 @@ import homeController from '../controllers/homeController';
 import multer from "multer";
 import path from "path";
 import appRoot from 'app-root-path';
+import { middleware } from '../controllers/middleware';
 
 let router = express.Router();
 
@@ -34,10 +35,7 @@ let upload = multer({
   storage: storage,
   fileFilter: imageFilter,
 });
-let upload2 = multer({
-  storage: storage,
-  fileFilter: imageFilter,
-}).array('profile_multiple_pic', 3)
+
 
 const initialRouter = (app) => {
   router.get('/', homeController.homePage)
@@ -48,17 +46,7 @@ const initialRouter = (app) => {
   router.post('/update-user', homeController.updateUser)
   router.get('/upload-file', homeController.getUploadFilePage)
   router.post('/upload-profile-pic',upload.single('profile_pic'),homeController.handleUploadFile)
-  router.post('/upload-multiple-profile-pic',(req,res,next) => {
-    upload2(req,res, (err) => {
-      if (err instanceof multer.MulterError && err.code === "LIMIT_UNEXPECTED_FILE") {
-        res.send('LIMIT_UNEXPECTED_FILE')
-      } else if (err) {
-        res.send(err)
-      } else {
-        next()
-      }
-    })
-  },homeController.handleUploadMultipleFile)
+  router.post('/upload-multiple-profile-pic',middleware.uploadFile,homeController.handleUploadMultipleFile)
   return app.use('/',router)
 }
 
