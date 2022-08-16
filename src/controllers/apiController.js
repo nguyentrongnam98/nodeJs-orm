@@ -35,7 +35,6 @@ const apiController = {
       `SELECT * FROM user where id = ? `,
       [id]
     );
-    console.log(user,123);
     if (user.length === 0) {
         return res.status(500).json({msg:"User not found"})
     }

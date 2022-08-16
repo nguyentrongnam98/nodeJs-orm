@@ -20,6 +20,11 @@
             <input type="file" name="profile_pic">
             <button type="submit">Save file</button>
          </form>
+         <form  method="POST" action="/upload-multiple-profile-pic" enctype="multipart/form-data">
+          <label>Chon nhieu file upload</label>
+          <input type="file" name="profile_multiple_pic" multiple>
+          <button type="submit">Save file</button>
+       </form>
     </div>
   </body>
 </html>
